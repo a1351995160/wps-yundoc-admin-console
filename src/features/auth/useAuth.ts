@@ -19,8 +19,8 @@ export function useAuthExpiredRedirect() {
       navigate('/login', { replace: true })
     }
 
-    window.addEventListener('admin-auth-expired', handleExpired)
-    return () => window.removeEventListener('admin-auth-expired', handleExpired)
+    globalThis.addEventListener('admin-auth-expired', handleExpired)
+    return () => globalThis.removeEventListener('admin-auth-expired', handleExpired)
   }, [navigate])
 }
 

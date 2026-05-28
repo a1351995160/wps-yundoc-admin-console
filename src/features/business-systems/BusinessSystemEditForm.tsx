@@ -2,10 +2,10 @@ import type { FormEvent } from 'react'
 import { useState } from 'react'
 import type { BusinessSystem, BusinessSystemStatus, BusinessSystemUpdateRequest } from './types'
 
-interface BusinessSystemEditFormProps {
+type BusinessSystemEditFormProps = Readonly<{
   businessSystem: BusinessSystem
   onSubmit: (request: BusinessSystemUpdateRequest) => Promise<void>
-}
+}>
 
 export function BusinessSystemEditForm({ businessSystem, onSubmit }: BusinessSystemEditFormProps) {
   const [businessSystemName, setBusinessSystemName] = useState(businessSystem.businessSystemName)
@@ -32,7 +32,7 @@ export function BusinessSystemEditForm({ businessSystem, onSubmit }: BusinessSys
   return (
     <form className="edit-grid" onSubmit={handleSubmit}>
       <label>
-        系统名称
+        <span>系统名称</span>
         <input
           aria-label="系统名称"
           value={businessSystemName}
@@ -40,7 +40,7 @@ export function BusinessSystemEditForm({ businessSystem, onSubmit }: BusinessSys
         />
       </label>
       <label>
-        状态
+        <span>状态</span>
         <select
           aria-label="状态"
           value={status}
@@ -51,7 +51,7 @@ export function BusinessSystemEditForm({ businessSystem, onSubmit }: BusinessSys
         </select>
       </label>
       <label>
-        JWT TTL
+        <span>JWT TTL</span>
         <input
           aria-label="JWT TTL"
           inputMode="numeric"
@@ -60,7 +60,7 @@ export function BusinessSystemEditForm({ businessSystem, onSubmit }: BusinessSys
         />
       </label>
       <label>
-        描述
+        <span>描述</span>
         <textarea
           aria-label="描述"
           value={description}

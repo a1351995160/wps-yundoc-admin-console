@@ -22,7 +22,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   if (!response.ok || !envelope.success) {
     if (response.status === 401) {
       clearAdminSession()
-      window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT))
+      globalThis.dispatchEvent(new Event(AUTH_EXPIRED_EVENT))
     }
     throw new ApiError(
       envelope.error?.message ?? 'Request failed',

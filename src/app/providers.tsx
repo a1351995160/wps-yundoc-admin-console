@@ -10,6 +10,10 @@ const queryClient = new QueryClient({
   }
 })
 
-export function AppProviders({ children }: { children: ReactNode }) {
+type AppProvidersProps = Readonly<{
+  children: ReactNode
+}>
+
+export function AppProviders({ children }: AppProvidersProps) {
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 }

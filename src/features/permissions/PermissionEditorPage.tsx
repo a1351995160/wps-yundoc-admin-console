@@ -127,16 +127,21 @@ export function PermissionEditorPage() {
   )
 }
 
-interface PermissionOptionProps {
+type PermissionOptionProps = Readonly<{
   definition: ApiPermissionDefinition
   checked: boolean
   onChange: () => void
-}
+}>
 
 function PermissionOption({ definition, checked, onChange }: PermissionOptionProps) {
   return (
     <label className="permission-option">
-      <input type="checkbox" checked={checked} onChange={onChange} />
+      <input
+        type="checkbox"
+        aria-label={`${definition.apiCode} ${definition.displayName}`}
+        checked={checked}
+        onChange={onChange}
+      />
       <span>
         <strong>{definition.apiCode}</strong>
         <span>{definition.displayName}</span>

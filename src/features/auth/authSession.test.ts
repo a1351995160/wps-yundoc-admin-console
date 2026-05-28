@@ -1,10 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import {
-  clearAdminSession,
-  getAdminSession,
-  isSessionValid,
-  saveAdminSession
-} from './authSession'
+import { describe, expect, it, vi } from 'vitest'
+import { clearAdminSession, getAdminSession, isSessionValid, saveAdminSession } from './authSession'
 
 describe('authSession', () => {
   it('saves and restores a valid admin session', () => {
@@ -23,8 +18,14 @@ describe('authSession', () => {
     expect(getAdminSession()).toBeNull()
     expect(sessionStorage.getItem('admin.session')).toBeNull()
 
-    sessionStorage.setItem('admin.session', 'not-json')
-    expect(getAdminSession()).toBeNull()
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+    try {
+      sessionStorage.setItem('admin.session', 'not-json')
+      expect(getAdminSession()).toBeNull()
+      expect(warnSpy).toHaveBeenCalled()
+    } finally {
+      warnSpy.mockRestore()
+    }
   })
 
   it('clears session storage on logout', () => {

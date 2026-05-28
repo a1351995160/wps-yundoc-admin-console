@@ -1,7 +1,7 @@
-interface PermissionChangeSummaryProps {
+type PermissionChangeSummaryProps = Readonly<{
   originalPermissions: string[]
   selectedPermissions: string[]
-}
+}>
 
 export function PermissionChangeSummary({
   originalPermissions,
@@ -22,13 +22,21 @@ export function PermissionChangeSummary({
         <div>
           <strong>新增</strong>
           <ul>
-            {additions.length > 0 ? additions.map((apiCode) => <li key={apiCode}>{apiCode}</li>) : <li>-</li>}
+            {additions.length > 0 ? (
+              additions.map((apiCode) => <li key={apiCode}>{apiCode}</li>)
+            ) : (
+              <li>-</li>
+            )}
           </ul>
         </div>
         <div>
           <strong>移除</strong>
           <ul>
-            {removals.length > 0 ? removals.map((apiCode) => <li key={apiCode}>{apiCode}</li>) : <li>-</li>}
+            {removals.length > 0 ? (
+              removals.map((apiCode) => <li key={apiCode}>{apiCode}</li>)
+            ) : (
+              <li>-</li>
+            )}
           </ul>
         </div>
       </div>

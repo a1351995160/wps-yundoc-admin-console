@@ -40,43 +40,43 @@ export function BusinessSystemCreatePage() {
       </div>
       <form className="edit-grid" onSubmit={handleSubmit}>
         <label>
-          系统标识
-        <input
-          aria-label="系统标识"
-          value={businessSystemId}
-          onChange={(event) => setBusinessSystemId(event.target.value)}
+          <span>系统标识</span>
+          <input
+            aria-label="系统标识"
+            value={businessSystemId}
+            onChange={(event) => setBusinessSystemId(event.target.value)}
           />
         </label>
         <label>
-          系统名称
-        <input
-          aria-label="系统名称"
-          value={businessSystemName}
-          onChange={(event) => setBusinessSystemName(event.target.value)}
+          <span>系统名称</span>
+          <input
+            aria-label="系统名称"
+            value={businessSystemName}
+            onChange={(event) => setBusinessSystemName(event.target.value)}
             required
           />
         </label>
         <label>
-          JWT TTL
-        <input
-          aria-label="JWT TTL"
-          inputMode="numeric"
-          value={jwtTtlSeconds}
+          <span>JWT TTL</span>
+          <input
+            aria-label="JWT TTL"
+            inputMode="numeric"
+            value={jwtTtlSeconds}
             onChange={(event) => setJwtTtlSeconds(event.target.value)}
             required
           />
         </label>
         <label>
-          描述
-        <textarea
-          aria-label="描述"
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
-        />
-      </label>
-      <button className="primary-button" type="submit" aria-label="创建" disabled={submitting}>
-        {submitting ? '创建中' : '创建'}
-      </button>
+          <span>描述</span>
+          <textarea
+            aria-label="描述"
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+          />
+        </label>
+        <button className="primary-button" type="submit" aria-label="创建" disabled={submitting}>
+          {submitting ? '创建中' : '创建'}
+        </button>
       </form>
       {result ? (
         <SecretResultModal

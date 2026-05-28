@@ -2,9 +2,9 @@ import { Button } from 'antd'
 import { Copy } from 'lucide-react'
 import { useState } from 'react'
 
-interface CopyButtonProps {
+type CopyButtonProps = Readonly<{
   value: string
-}
+}>
 
 export function CopyButton({ value }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
