@@ -51,6 +51,7 @@
     "vitest": "0.34.6"
   },
   "overrides": {
+    "node-releases": "2.0.36",
     "@typescript-eslint/typescript-estree": {
       "minimatch": "3.1.5"
     }
