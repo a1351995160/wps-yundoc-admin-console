@@ -1,6 +1,7 @@
 node_modules/
 dist/
 coverage/
+eslint-report.json
 playwright-report/
 test-results/
 .vite/
