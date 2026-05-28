@@ -1,7 +1,12 @@
-import { Database, KeyRound, ShieldCheck } from 'lucide-react'
+import { Button } from 'antd'
+import { BookOpen, Database, KeyRound, LogOut, ShieldCheck } from 'lucide-react'
 import { Link, Outlet } from 'react-router-dom'
+import { useAuthExpiredRedirect, useLogout } from '../../features/auth/useAuth'
 
 export function AppLayout() {
+  useAuthExpiredRedirect()
+  const logout = useLogout()
+
   return (
     <div className="app-shell">
       <aside className="side-nav" aria-label="主导航">
@@ -18,7 +23,14 @@ export function AppLayout() {
             <KeyRound aria-hidden="true" />
             权限控制
           </Link>
+          <Link to="/integration-guide">
+            <BookOpen aria-hidden="true" />
+            接入指南
+          </Link>
         </nav>
+        <Button className="logout-button" icon={<LogOut size={16} />} onClick={logout}>
+          退出
+        </Button>
       </aside>
       <main className="main-surface">
         <Outlet />
