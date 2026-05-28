@@ -1,0 +1,50 @@
+{
+  "name": "wps-yundoc-admin-console",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=16 <17",
+    "npm": ">=8 <10"
+  },
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "sonar": "sonar-scanner"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "4.36.1",
+    "antd": "5.14.2",
+    "dayjs": "1.11.10",
+    "lucide-react": "0.468.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-router-dom": "6.22.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "6.4.2",
+    "@testing-library/react": "14.2.1",
+    "@testing-library/user-event": "14.5.2",
+    "@types/node": "16.18.101",
+    "@types/react": "18.2.55",
+    "@types/react-dom": "18.2.19",
+    "@types/scheduler": "0.16.8",
+    "@typescript-eslint/eslint-plugin": "6.21.0",
+    "@typescript-eslint/parser": "6.21.0",
+    "@vitejs/plugin-react": "4.2.1",
+    "@vitest/coverage-v8": "0.34.6",
+    "eslint": "8.56.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "eslint-plugin-react-refresh": "0.4.5",
+    "jsdom": "22.1.0",
+    "prettier": "3.2.5",
+    "typescript": "5.4.5",
+    "vite": "4.5.3",
+    "vitest": "0.34.6"
+  }
+}
