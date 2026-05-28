@@ -34,7 +34,7 @@ describe('httpClient', () => {
 
   it('clears session and emits auth-expired when backend returns 401', async () => {
     const listener = vi.fn()
-    window.addEventListener('admin-auth-expired', listener)
+    globalThis.addEventListener('admin-auth-expired', listener)
     sessionStorage.setItem('admin.session', '{"adminJwt":"token"}')
     vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
       new Response(
@@ -50,6 +50,6 @@ describe('httpClient', () => {
 
     expect(sessionStorage.getItem('admin.session')).toBeNull()
     expect(listener).toHaveBeenCalledTimes(1)
-    window.removeEventListener('admin-auth-expired', listener)
+    globalThis.removeEventListener('admin-auth-expired', listener)
   })
 })

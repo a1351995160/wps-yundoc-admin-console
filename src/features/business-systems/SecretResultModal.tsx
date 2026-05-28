@@ -1,12 +1,12 @@
 import { CopyButton } from '../../shared/ui/CopyButton'
 
-interface SecretResultModalProps {
+type SecretResultModalProps = Readonly<{
   title: string
   clientId: string
   clientSecret: string
   versionText?: string
   onClose: () => void
-}
+}>
 
 export function SecretResultModal({
   title,
@@ -16,7 +16,7 @@ export function SecretResultModal({
   onClose
 }: SecretResultModalProps) {
   return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label={title}>
+    <dialog className="modal-backdrop" open aria-label={title}>
       <section className="secret-modal">
         <h2>{title}</h2>
         <dl className="secret-fields">
@@ -38,6 +38,6 @@ export function SecretResultModal({
           我已保存
         </button>
       </section>
-    </div>
+    </dialog>
   )
 }

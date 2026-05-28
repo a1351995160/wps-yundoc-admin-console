@@ -1,8 +1,8 @@
 import { Tag } from 'antd'
 
-interface StatusTagProps {
+type StatusTagProps = Readonly<{
   status?: string | null
-}
+}>
 
 export function StatusTag({ status }: StatusTagProps) {
   if (status === 'ENABLED') {

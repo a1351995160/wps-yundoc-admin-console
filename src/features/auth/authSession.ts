@@ -34,7 +34,8 @@ export function getAdminSession(): AdminSession | null {
       return null
     }
     return session
-  } catch (_error) {
+  } catch {
+    console.warn('Failed to parse admin session')
     clearAdminSession()
     return null
   }

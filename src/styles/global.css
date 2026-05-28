@@ -1,11 +1,7 @@
 :root {
   color: #17202a;
   background: #f6f8fb;
-  font-family:
-    "Microsoft YaHei",
-    "PingFang SC",
-    "Segoe UI",
-    sans-serif;
+  font-family: 'Microsoft YaHei', 'PingFang SC', 'Segoe UI', sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -182,7 +178,7 @@ a {
 }
 
 .primary-button {
-  background: #1677ff;
+  background: #0b64d8;
   color: #ffffff;
 }
 
@@ -266,6 +262,11 @@ a {
   z-index: 30;
   display: grid;
   place-items: center;
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
   background: rgba(15, 31, 46, 0.42);
   padding: 20px;
 }
