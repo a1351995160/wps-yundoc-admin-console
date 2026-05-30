@@ -19,10 +19,11 @@ export function SecretResultModal({
     <dialog className="modal-backdrop" open aria-label={title}>
       <section className="secret-modal">
         <h2>{title}</h2>
+        <p className="secret-warning">请立即保存客户端密钥。关闭后系统不再展示明文，只能重新生成。</p>
         <dl className="secret-fields">
-          <dt>clientId</dt>
+          <dt>接入标识</dt>
           <dd>{clientId}</dd>
-          <dt>clientSecret</dt>
+          <dt>客户端密钥</dt>
           <dd>
             <code>{clientSecret}</code>
             <CopyButton value={clientSecret} />

@@ -1,16 +1,26 @@
 /// <reference types="vitest" />
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-router-dom'],
-          antd: ['antd'],
-          query: ['@tanstack/react-query']
+        manualChunks(id) {
+          if (!id.includes('node_modules')) {
+            return undefined
+          }
+          if (id.includes('react')) {
+            return 'react'
+          }
+          if (id.includes('antd')) {
+            return 'antd'
+          }
+          if (id.includes('@tanstack/react-query')) {
+            return 'query'
+          }
+          return undefined
         }
       }
     }

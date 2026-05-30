@@ -1,14 +1,19 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { getCurrentAdmin, logoutAdmin } from './api'
 import { clearAdminSession, getAdminSession } from './authSession'
 
 export function useLogout() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
-  return useCallback(() => {
+  return useCallback(async () => {
+    await logoutAdmin().catch(() => undefined)
     clearAdminSession()
+    queryClient.removeQueries({ queryKey: ['current-admin'] })
     navigate('/login', { replace: true })
-  }, [navigate])
+  }, [navigate, queryClient])
 }
 
 export function useAuthExpiredRedirect() {
@@ -24,6 +29,13 @@ export function useAuthExpiredRedirect() {
   }, [navigate])
 }
 
-export function useCurrentAdminSession() {
-  return getAdminSession()
+export function useCurrentAdmin() {
+  const session = getAdminSession()
+
+  return useQuery({
+    queryKey: ['current-admin', session?.expiresAt],
+    queryFn: getCurrentAdmin,
+    enabled: session !== null,
+    staleTime: 60_000
+  })
 }

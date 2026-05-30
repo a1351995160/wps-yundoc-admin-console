@@ -1,6 +1,7 @@
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { apiResponse, saveTestAdminSession, systemAdmin } from '../../test/adminFixtures'
 import { renderWithClient } from '../../test/renderWithClient'
 import { BusinessSystemCreatePage } from './BusinessSystemCreatePage'
 
@@ -12,11 +13,14 @@ describe('BusinessSystemCreatePage', () => {
 
   it('shows one-time client secret and removes it after closing the modal', async () => {
     const user = userEvent.setup()
-    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
-      new Response(
-        JSON.stringify({
-          success: true,
-          data: {
+    saveTestAdminSession()
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async (input) => {
+      const url = String(input)
+      if (url.endsWith('/api/v1/admin/me')) {
+        return apiResponse(systemAdmin)
+      }
+      if (url.endsWith('/api/v1/admin/business-systems')) {
+        return apiResponse({
             businessSystem: {
               businessSystemId: 'biz-new',
               businessSystemName: '新系统',
@@ -27,20 +31,20 @@ describe('BusinessSystemCreatePage', () => {
               jwtTtlSeconds: 1800
             },
             clientSecret: 'one-time-secret'
-          }
-        }),
-        { status: 200 }
-      )
-    )
+          })
+      }
+      throw new Error(`Unexpected request: ${url}`)
+    })
 
     renderWithClient(<BusinessSystemCreatePage />)
 
+    const systemIdInput = await screen.findByLabelText('系统标识')
     await act(async () => {
-      await user.type(screen.getByLabelText('系统标识'), 'biz-new')
+      await user.type(systemIdInput, 'biz-new')
       await user.type(screen.getByLabelText('系统名称'), '新系统')
-      await user.clear(screen.getByLabelText('JWT TTL'))
-      await user.type(screen.getByLabelText('JWT TTL'), '1800')
-      await user.click(screen.getByRole('button', { name: '创建' }))
+      await user.clear(screen.getByLabelText('令牌有效期'))
+      await user.type(screen.getByLabelText('令牌有效期'), '1800')
+      await user.click(screen.getByRole('button', { name: '创建业务系统' }))
     })
 
     expect(await screen.findByText('one-time-secret')).toBeInTheDocument()

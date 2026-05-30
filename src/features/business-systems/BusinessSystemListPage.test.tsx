@@ -39,6 +39,10 @@ describe('BusinessSystemListPage', () => {
 
     expect(await screen.findByText('合同系统')).toBeInTheDocument()
     expect(screen.getByText('biz-contract')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: '查看详情' })).toHaveAttribute(
+      'href',
+      '/business-systems/biz-contract'
+    )
     expect(screen.queryByText('must-not-render')).not.toBeInTheDocument()
     expect(screen.queryByText('digest')).not.toBeInTheDocument()
   })

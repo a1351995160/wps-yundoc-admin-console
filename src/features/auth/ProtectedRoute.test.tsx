@@ -30,7 +30,7 @@ describe('ProtectedRoute', () => {
   })
 
   it('renders protected content for a valid session', () => {
-    saveAdminSession({ adminJwt: 'jwt', expiresInSeconds: 1800 })
+    saveAdminSession({ expiresInSeconds: 1800 })
 
     render(
       <MemoryRouter initialEntries={['/business-systems']}>

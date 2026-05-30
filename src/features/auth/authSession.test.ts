@@ -3,16 +3,16 @@ import { clearAdminSession, getAdminSession, isSessionValid, saveAdminSession } 
 
 describe('authSession', () => {
   it('saves and restores a valid admin session', () => {
-    saveAdminSession({ adminJwt: 'jwt', expiresInSeconds: 1800 })
+    saveAdminSession({ expiresInSeconds: 1800 })
 
-    expect(getAdminSession()).toMatchObject({ adminJwt: 'jwt' })
+    expect(getAdminSession()).toMatchObject({ expiresAt: expect.any(Number) })
     expect(isSessionValid()).toBe(true)
   })
 
   it('removes expired or malformed sessions', () => {
     sessionStorage.setItem(
       'admin.session',
-      JSON.stringify({ adminJwt: 'jwt', expiresAt: Date.now() - 1000, tokenType: 'Bearer' })
+      JSON.stringify({ expiresAt: Date.now() - 1000 })
     )
 
     expect(getAdminSession()).toBeNull()
@@ -29,7 +29,7 @@ describe('authSession', () => {
   })
 
   it('clears session storage on logout', () => {
-    saveAdminSession({ adminJwt: 'jwt', expiresInSeconds: 1800 })
+    saveAdminSession({ expiresInSeconds: 1800 })
 
     clearAdminSession()
 

@@ -1,4 +1,5 @@
 import { httpClient } from '../../shared/api/httpClient'
+import { businessSystemPathSegment } from '../business-systems/api'
 import type {
   ApiPermissionDefinition,
   BusinessSystemPermissions,
@@ -13,7 +14,7 @@ export function getBusinessSystemPermissions(
   businessSystemId: string
 ): Promise<BusinessSystemPermissions> {
   return httpClient.get<BusinessSystemPermissions>(
-    `/api/v1/admin/business-systems/${businessSystemId}/api-permissions`
+    `/api/v1/admin/business-systems/${businessSystemPathSegment(businessSystemId)}/api-permissions`
   )
 }
 
@@ -22,7 +23,7 @@ export function saveBusinessSystemPermissions(
   request: PermissionUpdateRequest
 ): Promise<BusinessSystemPermissions> {
   return httpClient.put<BusinessSystemPermissions>(
-    `/api/v1/admin/business-systems/${businessSystemId}/api-permissions`,
+    `/api/v1/admin/business-systems/${businessSystemPathSegment(businessSystemId)}/api-permissions`,
     request
   )
 }

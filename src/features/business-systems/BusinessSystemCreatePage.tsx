@@ -1,6 +1,9 @@
+import { Alert, Spin } from 'antd'
 import type { FormEvent } from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { canManageBusinessSystems } from '../auth/permissions'
+import { useCurrentAdmin } from '../auth/useAuth'
 import { createBusinessSystem } from './api'
 import { SecretResultModal } from './SecretResultModal'
 import type { BusinessSystemCreateResponse } from './types'
@@ -12,6 +15,24 @@ export function BusinessSystemCreatePage() {
   const [description, setDescription] = useState('')
   const [result, setResult] = useState<BusinessSystemCreateResponse | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const currentAdminQuery = useCurrentAdmin()
+
+  if (currentAdminQuery.isLoading) {
+    return <Spin />
+  }
+
+  if (!canManageBusinessSystems(currentAdminQuery.data)) {
+    return (
+      <section className="page-section">
+        <Alert
+          type="warning"
+          showIcon
+          message="无权创建业务系统"
+          description="只有超级管理员和系统管理员可以创建或调整业务系统。"
+        />
+      </section>
+    )
+  }
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
@@ -34,11 +55,11 @@ export function BusinessSystemCreatePage() {
       <div className="page-heading">
         <div>
           <h1>创建业务系统</h1>
-          <p>密钥明文只会在创建成功后展示一次。</p>
+          <p>客户端密钥明文只会在创建成功后展示一次，关闭后不可再次查看。</p>
         </div>
         <Link to="/business-systems">返回列表</Link>
       </div>
-      <form className="edit-grid" onSubmit={handleSubmit}>
+      <form className="edit-grid edit-grid--centered" onSubmit={handleSubmit}>
         <label>
           <span>系统标识</span>
           <input
@@ -57,9 +78,9 @@ export function BusinessSystemCreatePage() {
           />
         </label>
         <label>
-          <span>JWT TTL</span>
+          <span>令牌有效期（秒）</span>
           <input
-            aria-label="JWT TTL"
+            aria-label="令牌有效期"
             inputMode="numeric"
             value={jwtTtlSeconds}
             onChange={(event) => setJwtTtlSeconds(event.target.value)}
@@ -74,9 +95,14 @@ export function BusinessSystemCreatePage() {
             onChange={(event) => setDescription(event.target.value)}
           />
         </label>
-        <button className="primary-button" type="submit" aria-label="创建" disabled={submitting}>
-          {submitting ? '创建中' : '创建'}
-        </button>
+        <div className="form-actions">
+          <Link className="secondary-action" to="/business-systems">
+            取消
+          </Link>
+          <button className="primary-button" type="submit" aria-label="创建业务系统" disabled={submitting}>
+            {submitting ? '创建中' : '创建业务系统'}
+          </button>
+        </div>
       </form>
       {result ? (
         <SecretResultModal

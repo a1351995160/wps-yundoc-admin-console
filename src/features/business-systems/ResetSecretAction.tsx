@@ -22,7 +22,7 @@ export function ResetSecretAction({ onConfirm }: ResetSecretActionProps) {
   if (confirming) {
     return (
       <div className="inline-confirm" role="alert">
-        <span>旧业务凭证会失效。</span>
+        <span>确认后旧客户端密钥立即失效，接入方需要切换到新密钥。</span>
         <button
           className="danger-button"
           disabled={submitting}

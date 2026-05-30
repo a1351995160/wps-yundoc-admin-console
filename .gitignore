@@ -1,6 +1,8 @@
 node_modules/
 dist/
 coverage/
+.codex/
+artifacts/
 eslint-report.json
 playwright-report/
 test-results/

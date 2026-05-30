@@ -1,3 +1,5 @@
+import { CheckCircle2, FileKey2, KeyRound } from 'lucide-react'
+
 export function IntegrationGuidePage() {
   return (
     <section className="page-section">
@@ -8,57 +10,78 @@ export function IntegrationGuidePage() {
         </div>
       </div>
 
+      <div className="guide-overview" aria-label="接入流程概览">
+        <div>
+          <span className="section-kicker">接入流程</span>
+          <h2>先保存凭证，再换取令牌，最后调用已授权能力</h2>
+        </div>
+        <div className="guide-step-strip" aria-label="接入步骤">
+          <span>
+            <KeyRound size={16} aria-hidden="true" />
+            保存凭证
+          </span>
+          <span>
+            <FileKey2 size={16} aria-hidden="true" />
+            换取令牌
+          </span>
+          <span>
+            <CheckCircle2 size={16} aria-hidden="true" />
+            调用能力
+          </span>
+        </div>
+      </div>
+
       <div className="guide-grid">
         <section className="guide-section">
-          <h2>1. 保存凭证</h2>
+          <h2>保存凭证</h2>
           <p>创建或重置业务系统后，只会展示一次密钥明文。</p>
           <dl className="guide-fields">
-            <dt>clientId</dt>
+            <dt>接入标识</dt>
             <dd>
-              <code>{'<client-id>'}</code>
+              <code>{'<接入标识>'}</code>
             </dd>
-            <dt>clientSecret</dt>
+            <dt>客户端密钥</dt>
             <dd>
-              <code>{'<client-secret>'}</code>
+              <code>{'<客户端密钥>'}</code>
             </dd>
           </dl>
         </section>
 
         <section className="guide-section">
-          <h2>2. 换取业务 JWT</h2>
+          <h2>换取业务访问令牌</h2>
           <pre className="code-block">
             <code>{`POST /api/v1/auth/token
 Content-Type: application/json
 
 {
-  "clientId": "<client-id>",
-  "clientSecret": "<client-secret>"
+  "接入标识": "<接入标识>",
+  "客户端密钥": "<客户端密钥>"
 }`}</code>
           </pre>
           <p>
-            返回值中的 <code>{'<business-jwt>'}</code> 用于访问已授权能力接口。
+            返回值中的业务访问令牌用于访问已授权能力接口，示例中只使用占位符。
           </p>
         </section>
 
         <section className="guide-section">
-          <h2>3. 调用能力接口</h2>
+          <h2>调用能力接口</h2>
           <dl className="guide-fields">
-            <dt>wpsAccessToken</dt>
+            <dt>WPS 访问令牌</dt>
             <dd>
-              <code>{'<wps-access-token>'}</code>
+              <code>{'<WPS访问令牌>'}</code>
             </dd>
           </dl>
           <pre className="code-block">
-            <code>{`POST /api/v1/capabilities/app-preview
-Authorization: Bearer <business-jwt>
+            <code>{`POST /api/v1/app/previews
+Authorization: Bearer <业务访问令牌>
 Content-Type: application/json
 
 {
-  "wpsAccessToken": "<wps-access-token>",
-  "fileId": "<wps-file-id>"
+  "WPS访问令牌": "<WPS访问令牌>",
+  "文件标识": "<文件标识>"
 }`}</code>
           </pre>
-          <p>权限调整后，业务系统需要重新换取业务 JWT，避免继续使用旧权限版本。</p>
+          <p>权限调整后，业务系统需要重新换取业务访问令牌，避免继续使用旧授权版本。</p>
         </section>
       </div>
     </section>
