@@ -1,4 +1,4 @@
-import { clearAdminSession, getAdminSession } from '../../features/auth/authSession'
+import { clearAdminSession } from '../../features/auth/authSession'
 import type { ApiResponse } from './apiResponse'
 import { ApiError } from './errors'
 
@@ -12,10 +12,12 @@ type RequestOptions = Omit<RequestInit, 'body' | 'headers'> & {
 }
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  const { body, credentials, headers, ...requestOptions } = options
   const response = await fetch(path, {
-    ...options,
-    headers: buildHeaders(options.headers),
-    body: serializeBody(options.body)
+    ...requestOptions,
+    credentials: credentials ?? 'include',
+    headers: buildHeaders(headers),
+    body: serializeBody(body)
   })
   const envelope = (await response.json()) as ApiResponse<T>
 
@@ -37,12 +39,21 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
 
 function buildHeaders(headers?: HeadersInit): Headers {
   const nextHeaders = new Headers(headers)
-  const session = getAdminSession()
   nextHeaders.set('Content-Type', 'application/json')
-  if (session?.adminJwt) {
-    nextHeaders.set('Authorization', `Bearer ${session.adminJwt}`)
+  const csrfToken = readCookie('yundoc_admin_csrf')
+  if (csrfToken) {
+    nextHeaders.set('X-CSRF-Token', csrfToken)
   }
   return nextHeaders
+}
+
+function readCookie(name: string): string | null {
+  const cookiePrefix = `${name}=`
+  const cookie = document.cookie
+    .split(';')
+    .map((item) => item.trim())
+    .find((item) => item.startsWith(cookiePrefix))
+  return cookie ? decodeURIComponent(cookie.slice(cookiePrefix.length)) : null
 }
 
 function serializeBody(body: unknown): BodyInit | undefined {

@@ -27,7 +27,7 @@ describe('LoginPage', () => {
       new Response(
         JSON.stringify({
           success: true,
-          data: { adminJwt: 'admin-jwt', expiresInSeconds: 1800 }
+          data: { expiresInSeconds: 1800 }
         }),
         { status: 200 }
       )
@@ -42,7 +42,8 @@ describe('LoginPage', () => {
     })
 
     expect(await screen.findByText('业务系统列表')).toBeInTheDocument()
-    expect(sessionStorage.getItem('admin.session')).toContain('admin-jwt')
+    expect(sessionStorage.getItem('admin.session')).not.toContain('admin-jwt')
+    expect(sessionStorage.getItem('admin.session')).toContain('expiresAt')
   })
 
   it('shows stable backend error messages without leaking tokens', async () => {

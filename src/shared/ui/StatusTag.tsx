@@ -1,15 +1,13 @@
-import { Tag } from 'antd'
-
 type StatusTagProps = Readonly<{
   status?: string | null
 }>
 
 export function StatusTag({ status }: StatusTagProps) {
   if (status === 'ENABLED') {
-    return <Tag color="green">启用</Tag>
+    return <span className="status-pill status-pill--enabled">启用</span>
   }
   if (status === 'DISABLED') {
-    return <Tag color="red">停用</Tag>
+    return <span className="status-pill status-pill--disabled">停用</span>
   }
-  return <Tag>未知</Tag>
+  return <span className="status-pill">未知</span>
 }

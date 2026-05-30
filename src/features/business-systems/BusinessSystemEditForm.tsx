@@ -13,9 +13,17 @@ export function BusinessSystemEditForm({ businessSystem, onSubmit }: BusinessSys
   const [jwtTtlSeconds, setJwtTtlSeconds] = useState(String(businessSystem.jwtTtlSeconds))
   const [description, setDescription] = useState(businessSystem.description ?? '')
   const [submitting, setSubmitting] = useState(false)
+  const [waitingConfirm, setWaitingConfirm] = useState(false)
+  const disablesSystem = businessSystem.status !== 'DISABLED' && status === 'DISABLED'
+  const submitLabel = getSubmitLabel(submitting, waitingConfirm)
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
+    if (disablesSystem && !waitingConfirm) {
+      setWaitingConfirm(true)
+      return
+    }
+
     setSubmitting(true)
     try {
       await onSubmit({
@@ -44,16 +52,19 @@ export function BusinessSystemEditForm({ businessSystem, onSubmit }: BusinessSys
         <select
           aria-label="状态"
           value={status}
-          onChange={(event) => setStatus(event.target.value as BusinessSystemStatus)}
+          onChange={(event) => {
+            setStatus(event.target.value as BusinessSystemStatus)
+            setWaitingConfirm(false)
+          }}
         >
           <option value="ENABLED">启用</option>
           <option value="DISABLED">停用</option>
         </select>
       </label>
       <label>
-        <span>JWT TTL</span>
+        <span>令牌有效期（秒）</span>
         <input
-          aria-label="JWT TTL"
+          aria-label="令牌有效期"
           inputMode="numeric"
           value={jwtTtlSeconds}
           onChange={(event) => setJwtTtlSeconds(event.target.value)}
@@ -67,9 +78,25 @@ export function BusinessSystemEditForm({ businessSystem, onSubmit }: BusinessSys
           onChange={(event) => setDescription(event.target.value)}
         />
       </label>
+      {waitingConfirm ? (
+        <div className="risk-confirm" role="alert">
+          <strong>请确认停用业务系统</strong>
+          <span>停用后，该业务系统将无法继续使用当前接入能力，请确认接入方已知晓影响。</span>
+        </div>
+      ) : null}
       <button className="primary-button" type="submit" disabled={submitting}>
-        {submitting ? '保存中' : '保存基础信息'}
+        {submitLabel}
       </button>
     </form>
   )
+}
+
+function getSubmitLabel(submitting: boolean, waitingConfirm: boolean): string {
+  if (submitting) {
+    return '保存中'
+  }
+  if (waitingConfirm) {
+    return '确认保存'
+  }
+  return '保存基础信息'
 }

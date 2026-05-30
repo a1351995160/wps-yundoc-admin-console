@@ -1,8 +1,7 @@
 import { Alert, Button, Form, Input } from 'antd'
-import { LockKeyhole, LogIn, User } from 'lucide-react'
+import { LockKeyhole, ShieldCheck, User } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ApiError } from '../../shared/api/httpClient'
 import { loginAdmin } from './api'
 import { saveAdminSession } from './authSession'
 
@@ -33,11 +32,16 @@ export function LoginPage() {
   return (
     <main className="login-surface">
       <section className="login-panel" aria-labelledby="login-title">
-        <div className="login-brand">
-          <LogIn aria-hidden="true" />
-          <span>Yundoc Admin</span>
+        <div className="login-heading">
+          <div className="login-mark" aria-hidden="true">
+            <ShieldCheck size={22} />
+          </div>
+          <div>
+            <span>WPS 云文档管理台</span>
+            <h1 id="login-title">管理员登录</h1>
+          </div>
         </div>
-        <h1 id="login-title">登录管理台</h1>
+
         {errorMessage ? (
           <Alert role="alert" type="error" showIcon message={errorMessage} />
         ) : null}
@@ -68,9 +72,6 @@ export function LoginPage() {
   )
 }
 
-function toSafeLoginMessage(error: unknown): string {
-  if (error instanceof ApiError && error.code) {
-    return `登录失败：${error.code}`
-  }
+function toSafeLoginMessage(_error: unknown): string {
   return '登录失败'
 }

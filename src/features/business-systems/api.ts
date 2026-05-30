@@ -1,4 +1,5 @@
 import { httpClient } from '../../shared/api/httpClient'
+import { buildListSearch, normalizeListParams } from '../../shared/api/listQuery'
 import type {
   BusinessSystem,
   BusinessSystemCreateRequest,
@@ -16,17 +17,15 @@ interface ListParams {
   pageSize?: number
 }
 
+export const businessSystemQueryKeys = {
+  all: ['business-systems'] as const,
+  list: (params: ListParams) => [...businessSystemQueryKeys.all, normalizeListParams(params)] as const
+}
+
 export function listBusinessSystems(params: ListParams): Promise<BusinessSystemListResponse> {
-  const search = new URLSearchParams()
-  search.set('page', String(params.page ?? 1))
-  search.set('pageSize', String(params.pageSize ?? 20))
-  if (params.keyword) {
-    search.set('keyword', params.keyword)
-  }
-  if (params.status) {
-    search.set('status', params.status)
-  }
-  return httpClient.get<BusinessSystemListResponse>(`/api/v1/admin/business-systems?${search}`)
+  return httpClient.get<BusinessSystemListResponse>(
+    `/api/v1/admin/business-systems?${buildListSearch(params)}`
+  )
 }
 
 export function createBusinessSystem(
@@ -36,7 +35,9 @@ export function createBusinessSystem(
 }
 
 export function getBusinessSystem(businessSystemId: string): Promise<BusinessSystem> {
-  return httpClient.get<BusinessSystem>(`/api/v1/admin/business-systems/${businessSystemId}`)
+  return httpClient.get<BusinessSystem>(
+    `/api/v1/admin/business-systems/${businessSystemPathSegment(businessSystemId)}`
+  )
 }
 
 export function updateBusinessSystem(
@@ -44,13 +45,17 @@ export function updateBusinessSystem(
   request: BusinessSystemUpdateRequest
 ): Promise<BusinessSystem> {
   return httpClient.patch<BusinessSystem>(
-    `/api/v1/admin/business-systems/${businessSystemId}`,
+    `/api/v1/admin/business-systems/${businessSystemPathSegment(businessSystemId)}`,
     request
   )
 }
 
 export function resetClientSecret(businessSystemId: string): Promise<BusinessSystemSecretResponse> {
   return httpClient.post<BusinessSystemSecretResponse>(
-    `/api/v1/admin/business-systems/${businessSystemId}/client-secret:reset`
+    `/api/v1/admin/business-systems/${businessSystemPathSegment(businessSystemId)}/client-secret:reset`
   )
+}
+
+export function businessSystemPathSegment(businessSystemId: string): string {
+  return encodeURIComponent(businessSystemId)
 }

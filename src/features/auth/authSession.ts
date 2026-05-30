@@ -1,21 +1,16 @@
 export const ADMIN_SESSION_KEY = 'admin.session'
 
 export interface AdminLoginResult {
-  adminJwt: string
   expiresInSeconds: number
 }
 
 export interface AdminSession {
-  adminJwt: string
   expiresAt: number
-  tokenType: 'Bearer'
 }
 
 export function saveAdminSession(result: AdminLoginResult): AdminSession {
   const session: AdminSession = {
-    adminJwt: result.adminJwt,
-    expiresAt: Date.now() + result.expiresInSeconds * 1000,
-    tokenType: 'Bearer'
+    expiresAt: Date.now() + result.expiresInSeconds * 1000
   }
   sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(session))
   return session
@@ -29,7 +24,7 @@ export function getAdminSession(): AdminSession | null {
 
   try {
     const session = JSON.parse(raw) as AdminSession
-    if (!session.adminJwt || session.tokenType !== 'Bearer' || session.expiresAt <= Date.now()) {
+    if (!Number.isFinite(session.expiresAt) || session.expiresAt <= Date.now()) {
       clearAdminSession()
       return null
     }
