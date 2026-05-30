@@ -4,6 +4,7 @@ coverage/
 .codex/
 artifacts/
 eslint-report.json
+sonar-external-issues.json
 playwright-report/
 test-results/
 .vite/

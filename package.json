@@ -12,6 +12,7 @@
     "build": "tsc --noEmit && vite build",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:sonar": "eslint \"src/**/*.{ts,tsx}\" -c .eslintrc.sonar.cjs -f json -o eslint-report.json",
+    "sonar:external": "node scripts/sonar-external-issues.mjs",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "test:watch": "vitest",

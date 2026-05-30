@@ -39,6 +39,9 @@ jobs:
       - name: Generate Alibaba ESLint report
         run: npm run lint:sonar || true
 
+      - name: Generate Yundoc external security report
+        run: npm run sonar:external
+
       - name: SonarQube Cloud scan
         uses: SonarSource/sonarqube-scan-action@v8.1.0
         env:

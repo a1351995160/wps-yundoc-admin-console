@@ -54,8 +54,8 @@ export function IntegrationGuidePage() {
 Content-Type: application/json
 
 {
-  "接入标识": "<接入标识>",
-  "客户端密钥": "<客户端密钥>"
+  "clientId": "<接入标识>",
+  "clientSecret": "<客户端密钥>"
 }`}</code>
           </pre>
           <p>
@@ -66,9 +66,9 @@ Content-Type: application/json
         <section className="guide-section">
           <h2>调用能力接口</h2>
           <dl className="guide-fields">
-            <dt>WPS 访问令牌</dt>
+            <dt>请求签名密钥</dt>
             <dd>
-              <code>{'<WPS访问令牌>'}</code>
+              <code>{'<请求签名密钥>'}</code>
             </dd>
           </dl>
           <pre className="code-block">
@@ -77,9 +77,36 @@ Authorization: Bearer <业务访问令牌>
 Content-Type: application/json
 
 {
-  "WPS访问令牌": "<WPS访问令牌>",
-  "文件标识": "<文件标识>"
+  "source": {
+    "type": "WPS_FILE",
+    "fileId": "<文件标识>"
+  },
+  "options": {
+    "expireSeconds": 3600
+  }
 }`}</code>
+          </pre>
+          <pre className="code-block">
+            <code>{`GET /api/v1/user/files?userId=<用户标识>&parentFileId=root&limit=50
+Authorization: Bearer <业务访问令牌>
+X-Yundoc-User-Id: <用户标识>
+X-Yundoc-User-Timestamp: <时间戳>
+X-Yundoc-User-Nonce: <随机串>
+X-Yundoc-User-Signature: <请求签名>`}</code>
+          </pre>
+          <pre className="code-block">
+            <code>{`USER 签名内容
+GET
+/api/v1/user/files
+userId=<用户标识>&parentFileId=root&limit=50
+<业务系统标识>
+<接入标识>
+<用户标识>
+<时间戳>
+<随机串>
+
+签名算法
+base64url(HMAC-SHA256(签名内容, <请求签名密钥>))`}</code>
           </pre>
           <p>权限调整后，业务系统需要重新换取业务访问令牌，避免继续使用旧授权版本。</p>
         </section>
