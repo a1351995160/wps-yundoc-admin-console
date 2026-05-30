@@ -55,3 +55,8 @@ This document defines the baseline for the React admin console. The frontend liv
 - `npm test` and `npm run build` must pass before PR.
 - `npm run coverage` produces `coverage/lcov.info` for Sonar.
 - Sonar should fail on new critical/high issues, duplicated large components, uncovered risky logic, and security hotspots around tokens or secrets.
+- CI generates `eslint-report.json` with `.eslintrc.sonar.cjs` and imports it into SonarCloud through `sonar.eslint.reportPaths`.
+- CI generates `sonar-external-issues.json` with `scripts/sonar-external-issues.mjs` and imports it into SonarCloud through `sonar.externalIssuesReportPaths`.
+- `.eslintrc.sonar.cjs` carries stricter report-only checks for SonarCloud, including max params, complexity, max file/function size, raw HTML sinks, `eval`-style APIs, and TODO/FIXME markers.
+- Keep `.eslintrc.cjs` as the developer-facing lint baseline; put noisy or refactor-heavy checks in `.eslintrc.sonar.cjs` first so they appear in SonarCloud before becoming hard local gates.
+- Rule coverage details live in `docs/quality/sonarcloud-rule-coverage.md`.

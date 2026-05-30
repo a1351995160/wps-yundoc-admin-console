@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Security Scan Report - E:\wps-yundoc-admin-console</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.55; margin: 32px; color: #172033; }
+    h1, h2, h3 { color: #0f172a; }
+    code { background: #f1f5f9; padding: 2px 4px; border-radius: 4px; }
+    .finding { border-left: 4px solid #d97706; padding-left: 12px; margin: 18px 0; }
+  </style>
+</head>
+<body>
+  <h1>Security Scan Report - E:\wps-yundoc-admin-console</h1>
+  <p>未发现高危/严重的生产前端漏洞。主要问题是开发环境暴露。</p>
+  <div class="finding">
+    <h2>F-001 Low/Medium - Dev server exposes local backend proxy on the LAN</h2>
+    <p><code>npm run dev</code> 使用 <code>vite --host 0.0.0.0</code>，同时 <code>/api</code> 代理到 <code>http://localhost:8080</code>。同一局域网内的人可能通过开发机的 5173 端口访问本地后端代理。</p>
+    <p>建议默认改为 <code>vite --host 127.0.0.1</code>，需要局域网调试时再单独提供显式脚本。</p>
+  </div>
+  <h2>Checked And Not Found</h2>
+  <ul>
+    <li>No raw HTML/eval XSS sinks found.</li>
+    <li>No admin JWT/WPS token stored in session storage.</li>
+    <li>CSRF header is sent from the CSRF cookie.</li>
+    <li>Dynamic API path segments are encoded.</li>
+    <li>npm audit reported 0 vulnerabilities across 615 dependencies.</li>
+  </ul>
+</body>
+</html>
