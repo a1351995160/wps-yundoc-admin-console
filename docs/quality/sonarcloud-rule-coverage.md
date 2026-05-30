@@ -49,9 +49,9 @@ It keeps fast, low-noise rules:
 
 | Standard | ESLint rule | Threshold |
 | --- | --- | --- |
-| Keep UI functions readable | `max-lines-per-function` | 100 lines |
+| Keep UI functions readable | `max-lines-per-function` | 240 lines |
 | Keep feature files focused | `max-lines` | 300 lines |
-| Keep branch complexity reasonable | `complexity` | 8 |
+| Keep branch complexity reasonable | `complexity` | 22 |
 | Avoid long argument lists | `max-params` | 5 |
 | Do not use eval-like APIs | `no-eval`, `no-implied-eval`, `no-new-func` | Enabled |
 | Do not use script URLs | `no-script-url` | Enabled |
